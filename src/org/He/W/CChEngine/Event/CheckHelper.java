@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 import com.He.W.onebone.Circuit.Cu.exception.ParseException;
@@ -21,40 +21,19 @@ public class CheckHelper {
 	public ArrayList<String> event = new ArrayList<String>();
 	public ArrayList<String> tag = new ArrayList<String>();
 	
-	public TreeMap<Integer, String[]> eventList = new TreeMap<Integer, String[]>();
+	public HashMap<Integer, String[]> eventList = new HashMap<Integer, String[]>();
 	
 	public CheckHelper() throws ParseException{
-		try{
-			BufferedReader br = new BufferedReader(new FileReader(enumFile));
-			TreeMap<String, TreeMap<String, String>> tempContent = CCSParser.parseCCS(br);
-			br.close();
-			
-			tempContent.get("Event").forEach((k,v) -> {
-				event.add(v);
-			});
-			
-			tempContent.get("User").forEach((k, v) -> {
-				user.add(v);
-			});
-			
-			tempContent = null;
-			System.gc();
-			
-			br = new BufferedReader(new FileReader(listFile));
-			tempContent = CCSParser.parseCCS(br);
-			tempContent.forEach((k, v) -> {
-				
-					
-					/*Index of items
-					 * 0 = id
-					 * 1 = user identification
-					 * 1 = event enum
-					 * 2 = date
-					 * 3 = isFinished
-					 * 4 = Assigned tag
-					 * 5 = Assigned event
-					 * 6 = specific event
-					 */
+			/*Index of items
+				 * 0 = id
+				 * 1 = user identification
+				 * 2 = event enum
+				 * 3 = date
+				 * 4 = isFinished
+				 * 5 = Assigned tag
+				 * 6 = Assigned event
+				 * 7 = specific event
+				 */
 				/* : List.ccs
 				 *CChEngine CCS File v3
 				 *[0]
@@ -66,16 +45,6 @@ public class CheckHelper {
 				 *event=Assigned event
 				 *spec=Description
 				 */
-			});
-			
-			
-			
-		}catch(FileNotFoundException e){
-			throw new ParseException(ParseException.NO_FILE);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			throw new ParseException(ParseException.UNKNOWN);
-		}
 	}
 	
 	public void getSelectedDate(LocalDate date){
@@ -101,6 +70,44 @@ public class CheckHelper {
 	
 	public void assignEvent(){
 		
+	}
+	
+	public void loadEvents() throws ParseException{
+		try{
+			
+			TreeMap<String, TreeMap<String, String>> tempContent = new TreeMap<String, TreeMap<String, String>>();
+			BufferedReader br = new BufferedReader(new FileReader(listFile));
+			tempContent = CCSParser.parseCCS(br);
+			tempContent.forEach((k, v) -> {
+				Event e = new Event();
+				e.setId(Integer.parseInt(k));
+				e.setUserIdentification(v.get("user"));
+			});
+		
+		}catch(FileNotFoundException e){
+			throw new ParseException(ParseException.NO_FILE);
+		}
+	}
+	
+	public void loadEnums() throws ParseException{
+		try{
+			TreeMap<String, TreeMap<String, String>> tempContent = new TreeMap<String, TreeMap<String, String>>();
+			tempContent.get("Event").forEach((k,v) -> {
+			event.add(v);
+			});
+			
+			tempContent.get("User").forEach((k, v) -> {
+				user.add(v);
+			});
+			BufferedReader br = new BufferedReader(new FileReader(enumFile));
+			
+			
+			tempContent = null;
+			System.gc();
+			
+		}catch(FileNotFoundException e){
+			throw new ParseException(ParseException.NO_FILE);
+		}
 	}
 	
 }
