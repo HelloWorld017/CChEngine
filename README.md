@@ -1,0 +1,4 @@
+CChEngine
+=========
+
+An event manager
