@@ -9,11 +9,11 @@ public class Event {
 	public String eventSpec = "";
 	public LocalDate date = null;
 	public boolean isFinished = true;
-	public String assignedTag = "";
+	public String[] assignedTag;
 	public Event assignedEvent = null;
 	public String identification = "";
 	
-	public Event(int eventId, String userIdentification, String eventEnum, String eventSpec, LocalDate date, boolean isFinished, String assignedTag, Event assignedEvent, String identification){
+	public Event(int eventId, String userIdentification, String eventEnum, String eventSpec, LocalDate date, boolean isFinished, String[] assignedTag, Event assignedEvent, String identification){
 		
 		this.eventId = eventId;
 		this.userIdentification = userIdentification;
@@ -54,7 +54,7 @@ public class Event {
 		this.isFinished = isFinished;
 	}
 	
-	public void setAssignedTag(String tag){
+	public void setAssignedTag(String[] tag){
 		this.assignedTag = tag;
 	}
 	
@@ -90,7 +90,7 @@ public class Event {
 		return isFinished;
 	}
 	
-	public String getAssignedTag(){
+	public String[] getAssignedTag(){
 		return assignedTag;
 	}
 	

@@ -82,6 +82,10 @@ public class CheckHelper {
 				Event e = new Event();
 				e.setId(Integer.parseInt(k));
 				e.setUserIdentification(v.get("user"));
+				e.setEventType(v.get("name"));
+				e.setEventSpecification(v.get("spec"));
+				e.setLocalDate(LocalDate.parse(v.get("date")));
+				
 			});
 		
 		}catch(FileNotFoundException e){
@@ -92,11 +96,11 @@ public class CheckHelper {
 	public void loadEnums() throws ParseException{
 		try{
 			TreeMap<String, TreeMap<String, String>> tempContent = new TreeMap<String, TreeMap<String, String>>();
-			tempContent.get("Event").forEach((k,v) -> {
+			tempContent.get("event").forEach((k,v) -> {
 			event.add(v);
 			});
 			
-			tempContent.get("User").forEach((k, v) -> {
+			tempContent.get("user").forEach((k, v) -> {
 				user.add(v);
 			});
 			BufferedReader br = new BufferedReader(new FileReader(enumFile));
